@@ -1,4 +1,5 @@
 var bodyparser = require('body-parser')
+var Parser = require('./parser.js').Parser
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 
 
@@ -10,7 +11,8 @@ module.exports = function(app){
     app.get('/vugraph-viewer/', function(req, res){
         Http.onreadystatechange = function(){
             if (Http.readyState === 4){
-                res.send(Http.responseText)
+                parser = new Parser(Http.responseText)
+                res.render('vuview', parser.get_games)
             }
         }
         Http.open("GET", bbourl + `?id=${req.query.id}`, true)

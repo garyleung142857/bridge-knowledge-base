@@ -1,0 +1,24 @@
+{{#with bidding}}
+    <table id="biddingTable">
+        <tr>
+            <th><div>W</div></th>
+            <th><div>N</div></th>
+            <th><div>E</div></th>
+            <th><div>S</div></th>
+        </tr>
+        {{#each bidding_table}}
+            <tr>
+                {{#each row}}
+                    <td>{{{this}}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+    </table>
+    <table id"biddingNotation">
+        {{#each bidding_notation}}
+            <tr>
+                <td>{{{this}}}</td>
+            </tr>
+        {{/each}}
+    </table>
+{{/with}}

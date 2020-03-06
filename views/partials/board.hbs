@@ -1,0 +1,22 @@
+{{#with board}}
+    <div> 
+        <p>Board {{bdno}}<p>
+    </div>
+    <table id="dealTable">
+        <tr>
+            <td>Vul {{vul.str}}<br>Dealer {{deal.dealer}}</td>
+            <td>{{> hand h=deal.hands.N}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{> hand h=deal.hands.W}}</td>
+            <td></td>
+            <td>{{> hand h=deal.hands.E}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{{> hand h=deal.hands.S}}</td>
+            <td></td>
+        </tr>
+    </table>
+{{/with}}

@@ -1,0 +1,13 @@
+{{#each games}}
+    <table id="gameFrame">
+        <tr>
+            <td>
+                <div id="board">{{> board board=board}}</div>
+            </td>
+            <td>
+                <div id="bidding">{{> bidding bidding=bidding}}</div>
+            </td>
+        </tr>
+
+    </table>
+{{/each}}

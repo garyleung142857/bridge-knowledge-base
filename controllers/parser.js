@@ -2,15 +2,26 @@ const SUITS = ["S", "H", "D", "C"]
 const RANKS = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 const CARDINALS = ["S", "W", "N", "E"]
 const STRAINS = ["C", "D", "H", "S", "N"]
-const PDR = ["P", "D", "R"]
+const PDR = {"P": "P", "D": "X", "R": "R"}
 const VUL = {"b": "Both", "e": "EW", "n": "NS", "o": "None"}
 const TYPES = ["an", "mb", "mc", "md", "nt", "pc", "pg", "pn", "qx", "rs", "st", "sv", "vg"]
+const DISPLAY = {
+    "C": "<div id='clsymbol'> &#9827; </div>",
+    "D": "<div id='disymbol'> &#9830; </div>",
+    "H": "<div id='hesymbol'> &#9829; </div>",
+    "S": "<div id='spsymbol'> &#9824; </div>",
+    "N": "<div id='ntsymbol'> N </div>",
+    "P": "P",
+    "X": "Dbl",
+    "R": "RD"
+}
+
 
 class Parser{
     constructor(str){
         this.str = str
         this.actions = this.parse_str(this.str)
-        this.boards = Array()
+        this.games = Array()
     }
 
     parse_str(s){
@@ -23,20 +34,22 @@ class Parser{
     }
 
     parse(){
-        var cur_board = new Board({})
-        // var cur_game = new Game({})
+        var cur_game = new Game({})
+
         for (let i = 0; i < this.actions.length; i++) {
             // console.log(i, this.actions[i].t)
             var data = this.actions[i].d
             switch (this.actions[i].t) {
                 case "an": // annotation
+                    cur_game.bidding.set_notation(data)
                     break
                 case "mb": // make bid
+                    cur_game.bidding.add_call(data)
                     break;
                 case "mc": // make claim
                     break
                 case "md": // make deal
-                    cur_board.deal = new Deal({str: data})
+                    cur_game.board.deal = new Deal({str: data})
                     break
                 case "nt": // notation
                     break
@@ -47,30 +60,38 @@ class Parser{
                 case "pn": // player names
                     break
                 case "qx": // room
-                    this.boards.push(cur_board)
-                    var cur_board = new Board({})
-                    cur_board.bdno = data
+                    this.finish_game(cur_game)
+                    var cur_game = new Game({})
+                    cur_game.board.bdno = data
                     break
                 case "rs": // result
                     break
                 case "st": // no idea
                     break
                 case "sv": // set vul
-                    cur_board.vul = new Vul(data)
+                    cur_game.board.vul = new Vul(data)
                     break
                 case "vg": // vugraph
                     break
                 default:
                     break;
             }
-            
         }
-        this.boards.push(cur_board)
+        this.finish_game(cur_game)
+        this.games.shift()
     }
 
-    get b(){
+    finish_game(cur_game){
+        if(this.games.length > 0){
+            cur_game.bidding.set_dealer(cur_game.board.deal.dealer)
+            cur_game.bidding.make_bidding_table()
+        }
+        this.games.push(cur_game)
+    }
+
+    get get_games(){
         this.parse()
-        return this.boards
+        return {games: this.games}
     }
 }
 
@@ -87,7 +108,7 @@ class Card {
 }
 
 class Suit {
-    constructor({str, ranks}){
+    constructor({str, suit, ranks}){
         if (typeof str !== 'undefined'){
             this.ranks = Array.from({length: RANKS.length}, i => false)
             for (let i = 0; i < str.length; i++){
@@ -101,6 +122,10 @@ class Suit {
             this.rank = ranks
         }
         this.str = ""
+        this.suit = suit
+        if (typeof this.suit !== 'undefined'){
+            this.str = DISPLAY[suit]
+        }
         for (let i = 0; i < RANKS.length; i++) {
             if (this.ranks[i]){
                 this.str += RANKS[i]
@@ -124,7 +149,7 @@ class Hand {
                 }
             }
             for (let i = 0; i < temp.length; i++) {
-                this.suits[temp[i][0]] = new Suit({str: temp[i].slice(1)})
+                this.suits[temp[i][0]] = new Suit({str: temp[i].slice(1), suit: temp[i][0]})
             }
         }
     }
@@ -134,7 +159,7 @@ class Deal {
     constructor({str, hands, dealer}){
         this.hands = {S: Hand, W: Hand, N: Hand, E: Hand}
         if (typeof str !== 'undefined'){
-            this.dealer = CARDINALS[(5 - str[0]) % 4]
+            this.dealer = CARDINALS[str[0] - 1]
             var s = str.slice(1)
             var temp = s.split(",")
             for (let i = 0; i < CARDINALS.length; i++){
@@ -164,18 +189,20 @@ class Board {
 }
 
 class Game {
-
+    constructor(){
+        this.board = new Board({})
+        this.bidding = new Bidding()
+        this.play = new Play()
+    }
 }
 
 class Call {
-    constructor({str, level, strain, alerted, meaning}){
+    constructor({str, level, strain, alerted}){
         if (typeof str !== 'undefined'){
-            if (PDR.includes(str[0].toUpperCase())){
-                this.isBid = false
-                this.level = null
-                this.strain = str[0].toUpperCase()
+            if (str[0].toUpperCase() in PDR){
+                this.level = ""
+                this.strain = PDR[str[0].toUpperCase()]
             } else {
-                this.isBid = true
                 this.level = str[0]
                 this.strain = str[1].toUpperCase()
             } 
@@ -189,12 +216,73 @@ class Call {
             this.strain = strain
             this.alerted = alerted
         }
-        if (typeof meaning !== 'undefined'){
-            this.meaning = meaning
-        } else {
-            this.meaning = null
+        this.str = this.level + DISPLAY[this.strain]
+        this.notation = {
+            num: null,
+            str: null
         }
     }
+
+    set_notation(num, str){
+        this.notation.num = num
+        this.notation.str = str
+        this.str += "<sup>" +  this.notation.num + "</sup>"
+    }
+
+}
+
+class Bidding{
+    constructor(){
+        this.sequence = Array()
+        this.notation_num = 1
+        this.dealer = undefined
+        this.bidding_table = undefined
+        this.bidding_notation = new Array()
+    }
+
+    add_call(s){
+        this.sequence.push(new Call({str: s}))
+    }
+
+    set_notation(s){
+        this.sequence[this.sequence.length - 1].set_notation(this.notation_num, s)
+        this.bidding_notation.push(`${this.notation_num}: ${s}`)
+        this.notation_num ++
+    }
+
+    set_dealer(s){
+        this.dealer = s
+    }
+
+    make_bidding_table(){
+        var q = Array()  // just a queue
+        var header = new Array("W", "N", "E", "S")
+
+        for (let i = 0; i < header.indexOf(this.dealer); i++) {
+            q.push(" ")
+        }
+
+        for (let i = 0; i < this.sequence.length; i++) {
+            q.push(this.sequence[i].str)
+        }
+
+        while (q.length % 4 !== 0) {
+            q.push(" ")
+        }
+
+        var t = Array()  // The output 2d table
+        for (let i = 0; i < q.length; i = i + 4) {
+            var r = new Array(q[i], q[i+1], q[i+2], q[i+3]) 
+            t.push({row: r})
+        }
+
+        this.bidding_table = t
+    }
+
+}
+
+class Play{
+
 }
 
 var test_hand = "SA3HQJ7DQ9743C986"
@@ -213,10 +301,21 @@ var test_str = `vg|Gabi Pleven Teams,Round 5_11,I,1,32,Avesta,0,Struma,0| rs|,,,
 // console.log(new Call({str: '1N!'}))
 // console.log(new Call({str: 'p'}))
 // console.log(new Call({str: '6S!'}))
+// console.log(new Call({str: 'd'}))
+// console.log(new Call({str: 'r!'}))
+// var b = new Bidding()
+// b.add_call("1S!")
+// b.set_notation("Forcing")
+// b.add_call("P")
+// b.add_call("P")
+// console.log(b)
+// console.log(b.sequence[0])
 // console.log(new Vul("b"))
 // var b = new Board({})
 // b.bdno = 19
 // console.log(b)
 
-var p = new Parser(test_str)
-console.log(p.b)
+// var p = new Parser(test_str)
+// console.log(p.bds)
+
+module.exports = {Parser}
