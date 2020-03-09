@@ -1,21 +1,30 @@
 {{#with board}}
-    <div> 
-        <p>Board {{bdno}}<p>
-    </div>
-    <table id="dealTable">
+    <table class="dealTable">
         <tr>
-            <td>Vul {{vul.str}}<br>Dealer {{deal.dealer}}</td>
-            <td>{{> hand h=deal.hands.N}}</td>
+            <td align="center">{{> vul_dlr_bdno bdno=bdno dlr=deal.dealer vul=vul}}</td>
+            <td class="handwithname">
+                {{> hand h=deal.hands.N}}
+                {{>player_name name=players.[2] cardinal="N"}}
+            </td>
             <td></td>
         </tr>
         <tr>
-            <td>{{> hand h=deal.hands.W}}</td>
+            <td class="handwithname">
+                {{> hand h=deal.hands.W }}
+                <div>{{>player_name name=players.[1] cardinal="W"}}</div>
+            </td>
             <td></td>
-            <td>{{> hand h=deal.hands.E}}</td>
+            <td class="handwithname">
+                {{> hand h=deal.hands.E }}
+                <div>{{>player_name name=players.[3] cardinal="E"}}</div>
+            </td>
         </tr>
         <tr>
             <td></td>
-            <td>{{> hand h=deal.hands.S}}</td>
+            <td class="handwithname">
+                {{> hand h=deal.hands.S }}
+                <div>{{>player_name name=players.[0] cardinal="S"}}</div>
+            </td>
             <td></td>
         </tr>
     </table>

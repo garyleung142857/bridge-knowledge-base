@@ -7,7 +7,8 @@ app.engine('hbs', hbs({
     extname: 'hbs',
     defaultLayout: 'main',
     layoutsDir: 'views/layouts',
-    partialsDir: 'views/partials'
+    partialsDir: 'views/partials',
+    helpers: require('./config/handlebars-helpers')
 }))
 
 

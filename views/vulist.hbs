@@ -1,0 +1,24 @@
+<h1>Recent Vugraph</h1>
+
+<table class="recentvulist">
+    <tr>
+        <th>Date</th>
+        <th>Event</th>
+        <th>Segment</th>
+        <th>Team 1 Name</th>
+        <th>Team 2 Name</th>
+        <th>Team 1 Players</th>
+        <th>Team 2 Players</th>
+    </tr>
+    {{#each vulist}}
+        <tr>
+            <td>{{Date}}</td>
+            <td><a href={{link}}>{{event}}</a></td>
+            <td>{{segment}}</td>
+            <td>{{T1name}}</td>
+            <td>{{T2name}}</td>
+            <td>{{{T1players}}}</td>
+            <td>{{{T2players}}}</td>
+        </tr>
+    {{/each}}
+</table>

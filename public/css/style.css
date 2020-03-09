@@ -1,75 +1,92 @@
 body {
-    background: #ffffe0;
+    background: rgb(248, 246, 243);
     font-family: 'Inconsolata';
     font-size: unset;
 }
 
-#dealTable,
-#bidding{
-    background-color: rgb(219, 219, 219);
+.dealTable, .bidding{
+    background-color: rgb(245, 228, 191);
     border-radius: 0.1em;
     border-color: navy;
     border-style: solid;
 }
 
-#hand {
+.handwithname{
     background-color: rgb(191, 231, 209);
     border-radius: 0.1em;
-    border: 0.2em;
     border-color: navy;
     border-style: solid;
     min-width: 7em;
 }
 
-#suit {
+.suit {
     letter-spacing: 0.2em;
     font-size: 1.2em;
 }
 
-#spsymbol{
-    color: navy;
-}
+.spsymbol{color: navy;}
+.hesymbol{color: red;}
+.disymbol{color: orangered;}
+.clsymbol{color: green;}
+.ntsymbol{color: black;}
 
-#hesymbol{
-    color: red;
-}
-
-#disymbol{
-    color: orangered;
-}
-
-#clsymbol{
-    color: green;
-}
-
-#ntsymbol{
-    color: black;
-}
-
-#spsymbol,
-#hesymbol,
-#disymbol,
-#clsymbol,
-#ntsymbol{
+.spsymbol, .hesymbol, .disymbol, .clsymbol, .ntsymbol, .cardinal{
     font-size: unset;
     display: inline-block;
     width: 1em;
     text-align: center;
 }
 
-#biddingTable > tbody > tr > td,
-#biddingTable > tbody > tr > th{
+.biddingTable > tbody > tr > td,
+.biddingTable > tbody > tr > th{
     width: 2.7em;
     display: inline-block;
     text-align: center;
     font-size: larger;
 }
 
-#biddingTableHeader {
-    background-color: rgb(218, 230, 252);
+.biddingTable > tbody > tr > th,
+.playerName{
+    background-color:skyblue;
 }
+
+.biddingTableHeader {background-color: rgb(218, 230, 252);}
 
 sup{
     vertical-align: super;
     font-size: small;
+}
+
+.vul{
+    background-color: rgb(161, 14, 63);
+    color: white;
+}
+
+.notvul{
+    background-color: whitesmoke;
+}
+
+.vul, .notvul, .bdno, .cardinal{
+    text-align: center;
+    font-weight: bolder;
+}
+
+.corner{
+    width: 1em;
+    height: 1em;
+    background-color: unset
+}
+
+.bdno{
+    width: 2.5em;
+    height: 2.5em;
+    text-align: center;
+    background-color: thistle;
+}
+
+.recentvulist,
+.recentvulist > tbody > tr > td,
+.recentvulist > tbody > tr > th{
+    border-collapse: collapse;
+    border: 1px solid black;
 }

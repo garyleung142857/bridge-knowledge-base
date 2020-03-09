@@ -1,13 +1,17 @@
-{{#each games}}
-    <table id="gameFrame">
-        <tr>
-            <td>
-                <div id="board">{{> board board=board}}</div>
-            </td>
-            <td>
-                <div id="bidding">{{> bidding bidding=bidding}}</div>
-            </td>
-        </tr>
+<h1>{{{vu.meta.title}}}</h1>
 
-    </table>
-{{/each}}
+{{#with vu}}
+    {{#each games}}
+        <table id="gameFrame">
+            <tr>
+                <td>
+                    <div class="board">{{> board board=board}}</div>
+                </td>
+                <td>
+                    <div class="bidding">{{> bidding bidding=bidding}}</div>
+                </td>
+            </tr>
+
+        </table>
+    {{/each}}
+{{/with}}

@@ -1,0 +1,27 @@
+<div id="vulDealBdno">
+    <table>
+        <tr>
+            <td class="corner"></td>
+            {{#if vul.vulNS}} <td class="vul"> {{else}} <td class="notvul"> {{/if}} 
+                {{#ifeq dlr "N"}} D {{/ifeq}}
+            </td>
+            <td class="corner"></td>
+        </tr>
+        <tr>
+            {{#if vul.vulEW}} <td class="vul"> {{else}} <td class="notvul"> {{/if}} 
+                {{#ifeq dlr "W"}} D {{/ifeq}}
+            </td>
+            <td class="bdno">{{bdno}}</td>
+            {{#if vul.vulEW}} <td class="vul"> {{else}} <td class="notvul"> {{/if}} 
+                {{#ifeq dlr "E"}} D {{/ifeq}}
+            </td>
+        </tr>
+        <tr>
+            <td class="corner"></td>
+            {{#if vul.vulNS}} <td class="vul"> {{else}} <td class="notvul"> {{/if}} 
+                {{#ifeq dlr "S"}} D {{/ifeq}}
+            </td>
+            <td class="corner"></td>
+        </tr>
+    </table>
+</div>

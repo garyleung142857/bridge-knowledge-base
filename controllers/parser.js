@@ -6,22 +6,28 @@ const PDR = {"P": "P", "D": "X", "R": "R"}
 const VUL = {"b": "Both", "e": "EW", "n": "NS", "o": "None"}
 const TYPES = ["an", "mb", "mc", "md", "nt", "pc", "pg", "pn", "qx", "rs", "st", "sv", "vg"]
 const DISPLAY = {
-    "C": "<div id='clsymbol'> &#9827; </div>",
-    "D": "<div id='disymbol'> &#9830; </div>",
-    "H": "<div id='hesymbol'> &#9829; </div>",
-    "S": "<div id='spsymbol'> &#9824; </div>",
-    "N": "<div id='ntsymbol'> N </div>",
+    "C": "<div class='clsymbol'> &#9827; </div>",
+    "D": "<div class='disymbol'> &#9830; </div>",
+    "H": "<div class='hesymbol'> &#9829; </div>",
+    "S": "<div class='spsymbol'> &#9824; </div>",
+    "N": "<div class='ntsymbol'> N </div>",
     "P": "P",
     "X": "Dbl",
     "R": "RD"
 }
-
+const bbo_viewer_link = "https://www.bridgebase.com/tools/handviewer.html?bbo=y&linurl=https://www.bridgebase.com/tools/vugraph_linfetch.php"
 
 class Parser{
-    constructor(str){
+    constructor({str, id}){
         this.str = str
+        this.id = id
         this.actions = this.parse_str(this.str)
         this.games = Array()
+        this.meta = {
+            vugraph: undefined,
+            title: undefined,
+            players: new Array()
+        }
     }
 
     parse_str(s){
@@ -51,13 +57,14 @@ class Parser{
                 case "md": // make deal
                     cur_game.board.deal = new Deal({str: data})
                     break
-                case "nt": // notation
+                case "nt": // notation (Do not bother)
                     break
                 case "pc": // play card
                     break
-                case "pg": // page
+                case "pg": // page (Do not bother)
                     break
                 case "pn": // player names
+                    this.meta.players = data.split(",")
                     break
                 case "qx": // room
                     this.finish_game(cur_game)
@@ -72,6 +79,8 @@ class Parser{
                     cur_game.board.vul = new Vul(data)
                     break
                 case "vg": // vugraph
+                    this.meta.vugraph = data.split(",")
+                    this.meta.title = "<a href=" + bbo_viewer_link + "?id=" + this.id + " target='_blank'> " + this.meta.vugraph[0] + " " + this.meta.vugraph[1] + ": " + this.meta.vugraph[5] + " vs " + this.meta.vugraph[7] + "</a>"
                     break
                 default:
                     break;
@@ -85,13 +94,25 @@ class Parser{
         if(this.games.length > 0){
             cur_game.bidding.set_dealer(cur_game.board.deal.dealer)
             cur_game.bidding.make_bidding_table()
+            // players name
+            var temp = 0
+            if (cur_game.board.bdno[0] === "c"){
+                // temp = 4
+                cur_game.board.players = this.meta.players.slice(4) 
+            } else {
+                cur_game.board.players = this.meta.players.slice(0,4) 
+            }
+            // cur_game.board.deal.hands.S.player = this.meta.players[temp]
+            // cur_game.board.deal.hands.W.player = this.meta.players[temp + 1]
+            // cur_game.board.deal.hands.N.player = this.meta.players[temp + 2]
+            // cur_game.board.deal.hands.E.player = this.meta.players[temp + 3]
         }
         this.games.push(cur_game)
     }
 
     get get_games(){
         this.parse()
-        return {games: this.games}
+        return {vu: this}
     }
 }
 
@@ -137,7 +158,7 @@ class Suit {
 
 
 class Hand {
-    constructor({str, suits}){
+    constructor({str, suits, player}){
         this.suits = {S: Suit, H: Suit, D: Suit, C: Suit}
         if (typeof str !== 'undefined'){
             var temp = Array()
@@ -181,10 +202,11 @@ class Vul {
 }
 
 class Board {
-    constructor({bdno, vul, deal}){
+    constructor({bdno, vul, deal, players}){
         this.bdno = bdno
         this.vul = vul
         this.deal = deal
+        this.players = players
     }
 }
 
