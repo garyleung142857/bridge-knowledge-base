@@ -1,15 +1,15 @@
-{{#with bidding}}
-    <table class="biddingTable">
-        <tr>
-            <th><div>W</div></th>
-            <th><div>N</div></th>
-            <th><div>E</div></th>
-            <th><div>S</div></th>
-        </tr>
+<table class="biddingTable">
+    <tr class="biddingTableHeader">
+        <th><div>{{>player_name name=pn.[1]}}</div></th>
+        <th><div>{{>player_name name=pn.[2]}}</div></th>
+        <th><div>{{>player_name name=pn.[3]}}</div></th>
+        <th><div>{{>player_name name=pn.[0]}}</div></th>
+    </tr>
+    {{#with bidding}}
         {{#each bidding_table}}
             <tr>
                 {{#each row}}
-                    <td>{{{this}}}</td>
+                    <td><div class="bids">{{{this}}}</div></td>
                 {{/each}}
             </tr>
         {{/each}}
@@ -21,5 +21,5 @@
                 <td>{{{this}}}</td>
             </tr>
         {{/each}}
-    </table>
-{{/with}}
+    {{/with}}
+</table>

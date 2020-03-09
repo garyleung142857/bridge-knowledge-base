@@ -1,8 +1,10 @@
 <div class="hand">
     {{#with h}}
-        <div>{{> suit s=suits.S }}</div>
-        <div>{{> suit s=suits.H }}</div>
-        <div>{{> suit s=suits.D }}</div>
-        <div>{{> suit s=suits.C }}</div>
+        <table>
+            <tr><div class="suit">{{> suit s=suits.S }}</div></tr>
+            <tr><div class="suit">{{> suit s=suits.H }}</div></tr>
+            <tr><div class="suit">{{> suit s=suits.D }}</div></tr>
+            <tr><div class="suit">{{> suit s=suits.C }}</div></tr>
+        </table>
     {{/with}}
 </div>

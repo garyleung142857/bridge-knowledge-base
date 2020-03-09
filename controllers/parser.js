@@ -41,16 +41,15 @@ class Parser{
 
     parse(){
         var cur_game = new Game({})
-
+        var cur_player = new Player()
         for (let i = 0; i < this.actions.length; i++) {
-            // console.log(i, this.actions[i].t)
             var data = this.actions[i].d
             switch (this.actions[i].t) {
                 case "an": // annotation
-                    cur_game.bidding.set_notation(data)
+                    cur_player.bidding.set_notation(data)
                     break
                 case "mb": // make bid
-                    cur_game.bidding.add_call(data)
+                    cur_player.bidding.add_call(data)
                     break;
                 case "mc": // make claim
                     break
@@ -67,13 +66,19 @@ class Parser{
                     this.meta.players = data.split(",")
                     break
                 case "qx": // room
-                    this.finish_game(cur_game)
+                    this.finish_game(cur_player, cur_game)
                     var cur_game = new Game({})
-                    cur_game.board.bdno = data
+                    var cur_player = new Player()
+                    if (data[0] === "c"){
+                        cur_player.names = this.meta.players.slice(4)
+                    } else {
+                        cur_player.names = this.meta.players.slice(0, 4) 
+                    }
+                    cur_game.board.bdno = /\d+/.exec(data)[0]
                     break
                 case "rs": // result
                     break
-                case "st": // no idea
+                case "st": // start
                     break
                 case "sv": // set vul
                     cur_game.board.vul = new Vul(data)
@@ -86,26 +91,15 @@ class Parser{
                     break;
             }
         }
-        this.finish_game(cur_game)
+        this.finish_game(cur_player, cur_game)
         this.games.shift()
     }
 
-    finish_game(cur_game){
+    finish_game(cur_player, cur_game){
         if(this.games.length > 0){
-            cur_game.bidding.set_dealer(cur_game.board.deal.dealer)
-            cur_game.bidding.make_bidding_table()
-            // players name
-            var temp = 0
-            if (cur_game.board.bdno[0] === "c"){
-                // temp = 4
-                cur_game.board.players = this.meta.players.slice(4) 
-            } else {
-                cur_game.board.players = this.meta.players.slice(0,4) 
-            }
-            // cur_game.board.deal.hands.S.player = this.meta.players[temp]
-            // cur_game.board.deal.hands.W.player = this.meta.players[temp + 1]
-            // cur_game.board.deal.hands.N.player = this.meta.players[temp + 2]
-            // cur_game.board.deal.hands.E.player = this.meta.players[temp + 3]
+            cur_player.bidding.set_dealer(cur_game.board.deal.dealer)
+            cur_player.bidding.make_bidding_table()
+            cur_game.players.push(cur_player)
         }
         this.games.push(cur_game)
     }
@@ -202,19 +196,20 @@ class Vul {
 }
 
 class Board {
-    constructor({bdno, vul, deal, players}){
+    constructor({bdno, vul, deal}){
         this.bdno = bdno
         this.vul = vul
         this.deal = deal
-        this.players = players
+        // this.players = players
     }
 }
 
 class Game {
     constructor(){
         this.board = new Board({})
-        this.bidding = new Bidding()
-        this.play = new Play()
+        // this.bidding = new Bidding()
+        // this.play = new Play()
+        this.players = new Array()
     }
 }
 
@@ -303,7 +298,20 @@ class Bidding{
 
 }
 
+class Player{
+    constructor(){
+        this.names = new Array()
+        this.bidding = new Bidding()
+        this.play = new Play()
+        this.result = new Result()
+    }
+}
+
 class Play{
+
+}
+
+class Result{
 
 }
 

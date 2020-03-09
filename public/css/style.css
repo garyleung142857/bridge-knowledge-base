@@ -2,26 +2,33 @@ body {
     background: rgb(248, 246, 243);
     font-family: 'Inconsolata';
     font-size: unset;
+    /* font-weight: bold; */
 }
 
 .dealTable, .bidding{
-    background-color: rgb(245, 228, 191);
+    background-color: rgb(255, 235, 193);
     border-radius: 0.1em;
     border-color: navy;
     border-style: solid;
+    max-width: fit-content;
 }
 
-.handwithname{
-    background-color: rgb(191, 231, 209);
+.hand{
+    background-color: rgb(206, 250, 193);
     border-radius: 0.1em;
     border-color: navy;
     border-style: solid;
     min-width: 7em;
+    vertical-align: middle;
+    padding: 0em;
 }
 
 .suit {
     letter-spacing: 0.2em;
     font-size: 1.2em;
+    height: 1em;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
 .spsymbol{color: navy;}
@@ -37,20 +44,21 @@ body {
     text-align: center;
 }
 
-.biddingTable > tbody > tr > td,
-.biddingTable > tbody > tr > th{
-    width: 2.7em;
+.bids{
+    width: 3.5em;
     display: inline-block;
     text-align: center;
     font-size: larger;
 }
 
-.biddingTable > tbody > tr > th,
-.playerName{
-    background-color:skyblue;
-}
+.biddingTableHeader{background-color: rgb(216, 240, 250);}
 
-.biddingTableHeader {background-color: rgb(218, 230, 252);}
+.playerName{
+    font-weight: normal;
+    font-size: smaller;
+    font-stretch: condensed;
+    overflow: hidden;
+}
 
 sup{
     vertical-align: super;
@@ -62,13 +70,12 @@ sup{
     color: white;
 }
 
-.notvul{
-    background-color: whitesmoke;
-}
+.notvul{background-color:white;}
 
 .vul, .notvul, .bdno, .cardinal{
     text-align: center;
     font-weight: bolder;
+    border-collapse: collapse;
 }
 
 .corner{

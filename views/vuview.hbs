@@ -2,16 +2,12 @@
 
 {{#with vu}}
     {{#each games}}
-        <table id="gameFrame">
-            <tr>
-                <td>
-                    <div class="board">{{> board board=board}}</div>
-                </td>
-                <td>
-                    <div class="bidding">{{> bidding bidding=bidding}}</div>
-                </td>
-            </tr>
-
-        </table>
+        <div class="board">{{> board board=board}}</div>
+        <br>
+        {{#each players}}
+            <div class="bidding">{{> bidding bidding=bidding pn=names}}</div>
+            <br>
+        {{/each}}
+        <hr>
     {{/each}}
 {{/with}}
