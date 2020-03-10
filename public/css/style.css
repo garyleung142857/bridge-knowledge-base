@@ -44,14 +44,23 @@ body {
     text-align: center;
 }
 
-.bids{
+.bids, .bidsAlerted{
     width: 3.5em;
     display: inline-block;
     text-align: center;
     font-size: larger;
 }
 
+.bidsAlerted{
+    outline: brown solid 0.1em;
+    outline-width: 0.1em;
+}
+
 .biddingTableHeader{background-color: rgb(216, 240, 250);}
+
+.biddingTableHeader > tr > td {
+    width: 4em;
+}
 
 .playerName{
     font-weight: normal;

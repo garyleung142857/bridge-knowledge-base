@@ -9,7 +9,7 @@
         {{#each bidding_table}}
             <tr>
                 {{#each row}}
-                    <td><div class="bids">{{{this}}}</div></td>
+                    <td>{{>bid bid=this}}</td>
                 {{/each}}
             </tr>
         {{/each}}
