@@ -4,26 +4,22 @@
             <td align="center">{{> vul_dlr_bdno bdno=bdno dlr=deal.dealer vul=vul}}</td>
             <td class="handwithname">
                 {{> hand h=deal.hands.N}}
-                {{>player_name name=players.[2] cardinal="N"}}
             </td>
             <td></td>
         </tr>
         <tr>
             <td class="handwithname">
                 {{> hand h=deal.hands.W }}
-                <div>{{>player_name name=players.[1] cardinal="W"}}</div>
             </td>
             <td></td>
             <td class="handwithname">
                 {{> hand h=deal.hands.E }}
-                <div>{{>player_name name=players.[3] cardinal="E"}}</div>
             </td>
         </tr>
         <tr>
             <td></td>
             <td class="handwithname">
                 {{> hand h=deal.hands.S }}
-                <div>{{>player_name name=players.[0] cardinal="S"}}</div>
             </td>
             <td></td>
         </tr>

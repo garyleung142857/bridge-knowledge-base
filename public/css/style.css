@@ -5,12 +5,12 @@ body {
     /* font-weight: bold; */
 }
 
-.dealTable, .bidding{
+.dealTable, .biddingTable{
     background-color: rgb(255, 235, 193);
     border-radius: 0.1em;
     border-color: navy;
     border-style: solid;
-    max-width: fit-content;
+    max-width: max-content;
 }
 
 .hand{
