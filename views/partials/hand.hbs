@@ -1,10 +1,8 @@
-<div class="hand">
-    {{#with h}}
-        <table>
-            <tr><td><div class="suit">{{> suit s=suits.S }}</div></td></tr>
-            <tr><td><div class="suit">{{> suit s=suits.H }}</div></td></tr>
-            <tr><td><div class="suit">{{> suit s=suits.D }}</div></td></tr>
-            <tr><td><div class="suit">{{> suit s=suits.C }}</div></td></tr>
-        </table>
-    {{/with}}
-</div>
+{{#with h}}
+    <table class="hand">
+        <tr><td class="suit">{{> suit s=suits.S }}</td></tr>
+        <tr><td class="suit">{{> suit s=suits.H }}</td></tr>
+        <tr><td class="suit">{{> suit s=suits.D }}</td></tr>
+        <tr><td class="suit">{{> suit s=suits.C }}</td></tr>
+    </table>
+{{/with}}

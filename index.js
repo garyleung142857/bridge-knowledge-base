@@ -22,4 +22,5 @@ app.use(express.static('public'))
 vuviewer(app)
 
 //listen to port
-app.listen(process.env.PORT || 3001)
+app.listen(process.env.PORT || 5000)
+console.log(`You are listening to port ${process.env.PORT || 5000}`)

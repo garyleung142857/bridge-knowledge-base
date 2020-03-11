@@ -2,10 +2,10 @@
 
 {{#with vu}}
     {{#each games}}
-        <div class="board">{{> board board=board}}</div>
+        {{> board board=board}}
         <br>
         {{#each players}}
-            <div class="bidding">{{> bidding bidding=bidding pn=names}}</div>
+            {{> bidding bidding=bidding pn=names}}
             <br>
         {{/each}}
         <hr>
