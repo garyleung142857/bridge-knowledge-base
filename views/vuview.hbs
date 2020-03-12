@@ -1,13 +1,16 @@
 <h1>{{{vu.meta.title}}}</h1>
-
 {{#with vu}}
     {{#each games}}
-        {{> board board=board}}
-        <br>
-        {{#each players}}
-            {{> bidding bidding=bidding pn=names}}
-            <br>
-        {{/each}}
+        <table>
+            <tr><td colspan=2>{{> board board=board}}</td></tr>
+            {{#each players}}
+                <tr><td><br></td></tr>
+                <tr>
+                    <td>{{> bidding bidding=bidding pn=names}}</td>
+                    <td valign="top">{{> result result=result}}</td>
+                </tr>
+            {{/each}}
+        </table>
         <hr>
     {{/each}}
 {{/with}}

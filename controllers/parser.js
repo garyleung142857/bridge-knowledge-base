@@ -26,7 +26,8 @@ class Parser{
         this.meta = {
             vugraph: undefined,
             title: undefined,
-            players: new Array()
+            players: new Array(),
+            results: new Array()
         }
     }
 
@@ -69,14 +70,22 @@ class Parser{
                     this.finish_game(cur_player, cur_game)
                     var cur_game = new Game({})
                     var cur_player = new Player()
+                    cur_game.board.bdno = /\d+/.exec(data)[0]
                     if (data[0] === "c"){
                         cur_player.names = this.meta.players.slice(4)
+                        cur_player.result.set_result(this.meta.results[parseInt(cur_game.board.bdno) * 2 + 1])
                     } else {
-                        cur_player.names = this.meta.players.slice(0, 4) 
+                        cur_player.names = this.meta.players.slice(0, 4)
+                        cur_player.result.set_result(this.meta.results[parseInt(cur_game.board.bdno) * 2])
                     }
-                    cur_game.board.bdno = /\d+/.exec(data)[0]
                     break
                 case "rs": // result
+                    var arr = []
+                    for(var j=0; j<parseInt(this.meta.vugraph[3]) * 2; ++j) arr.push("");
+                    this.meta.results = arr.concat(data.split(","))
+                    while (this.meta.results.length < parseInt(this.meta.vugraph[4]) * 2 + 1) {
+                        this.meta.results.push("")
+                    }
                     break
                 case "st": // start
                     break
@@ -328,7 +337,43 @@ class Play{
 }
 
 class Result{
-
+    constructor(){
+        this.level = undefined
+        this.strain = undefined
+        this.declarer = undefined
+        this.pdr = undefined
+        this.res = undefined
+        this.str = ""
+    }
+    
+    set_result(str){
+        if (str.length > 0 || typeof str !== 'undefined'){
+            if (str.toUpperCase() === "PASS"){
+                this.level = 0
+                this.strain = "P"
+                this.str = "Passout"
+            } else {
+                this.level = parseInt(str[0])
+                this.strain = str[1]
+                this.declarer = str[2]
+                if (str[3].toUpperCase() === "X") {
+                    if (str[4].toUpperCase() === "X"){
+                        this.pdr = "XX"
+                    } else {
+                        this.pdr = "X"
+                    }
+                } else {
+                    this.pdr = ""
+                }
+                if (str.slice(-1) === "=" || str.slice(-1) === "0"){
+                    this.res = "="
+                } else {
+                    this.res = str.slice(-2)
+                }
+                this.str = this.level + DISPLAY[this.strain] + this.pdr + this.declarer + " " + this.res
+            }
+        }
+    }
 }
 
 module.exports = {Parser}

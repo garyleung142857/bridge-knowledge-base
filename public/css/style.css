@@ -4,18 +4,16 @@ body {
     font-size: unset;
 }
 
-.dealTable, .biddingTable{
+.dealTable, .biddingTable, .result{
     background-color: rgb(255, 235, 193);
-    border-radius: 0.1em;
-    border-color: navy;
-    border-style: solid;
+    outline: 1px solid navy;
     max-width: max-content;
     white-space: nowrap;
 }
 
 .hand{
     background-color: rgb(206, 250, 193);
-    outline: 0.1em navy solid;
+    outline: 1px navy solid;
     min-width: 7em;
     padding: 0em;
 }
@@ -23,7 +21,7 @@ body {
 .hand > tbody > tr > td{vertical-align: middle;}
 
 .suit {
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     font-size: 1.2em;
     vertical-align: middle;
     line-height: 1em;
@@ -45,27 +43,26 @@ body {
 }
 
 .bids, .bidsAlerted{
-    width: 3em;
-    height: 1.3em;
+    height: 25px;
     text-align: center;
     font-size: larger;
 }
 
 .bidsAlerted{
-    outline: brown solid 0.1em;
-    outline-width: 0.1em;
-    outline-offset: -0.1em;
+    outline: brown solid 2px;
+    outline-offset: -2px;
 }
 
 .biddingTableHeader{background-color: rgb(216, 240, 250);}
 
-.playerName{
+.playerName, .result > tbody > tr > th {
     font-weight: normal;
     font-size: smaller;
-    width: 4em;
+    width: 65px;
     overflow: hidden;
     padding: 0em;
-    text-overflow: ellipsis;
+    letter-spacing: -0.05em;
+    text-align: left;
 }
 
 sup{
