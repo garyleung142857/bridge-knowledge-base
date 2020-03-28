@@ -153,12 +153,12 @@ class Suit {
                 }
             }
         } else {
-            this.rank = ranks
+            this.ranks = ranks
         }
         this.s = ""
         this.str = ""
         this.suit = suit
-        if (typeof this.suit !== 'undefined'){
+        if (typeof suit !== 'undefined'){
             this.str = DISPLAY[suit]
         }
         for (let i = 0; i < RANKS.length; i++) {
@@ -187,8 +187,56 @@ class Hand {
             for (let i = 0; i < temp.length; i++) {
                 this.suits[temp[i][0]] = new Suit({str: temp[i].slice(1), suit: temp[i][0]})
             }
+        } else {
+            this.suits = suits
         }
+        this.set_s()
+        this.complete = (this.suits.S.len + this.suits.H.len + this.suits.D.len + this.suits.C.len == 13)
+    }
+
+    
+    set_s(){
         this.s = this.suits.S.s + this.suits.H.s + this.suits.D.s + this.suits.C.s
+    }
+
+    set_from_three_hands(hands){
+
+        var temp = {
+            S: Array.from({length: RANKS.length}, i => true),
+            H: Array.from({length: RANKS.length}, i => true),
+            D: Array.from({length: RANKS.length}, i => true),
+            C: Array.from({length: RANKS.length}, i => true)
+        }
+        var counter = 0
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < SUITS.length; j++) {
+                for (let k = 0; k < RANKS.length; k++) {
+                    // console.log(hands[i], SUITS[j])
+                    if (hands[i].suits[SUITS[j]].ranks[k]){
+                        if (temp[SUITS[j]][k]){
+                            temp[SUITS[j]][k] = false
+                            counter++
+                            // console.log(counter)
+                        } else {
+                            // corrupted hand
+                            return
+                        }
+                    }
+                } 
+            }    
+        }
+        if (counter == 39){
+            this.suits = {
+                S: new Suit({ranks: temp.S, suit: "S"}),
+                H: new Suit({ranks: temp.H, suit: "H"}),
+                D: new Suit({ranks: temp.D, suit: "D"}),
+                C: new Suit({ranks: temp.C, suit: "C"})
+            }
+            this.set_s()
+        } else {
+            return
+        }
+
     }
 }
 
@@ -201,6 +249,10 @@ class Deal {
             var temp = s.split(",")
             for (let i = 0; i < CARDINALS.length; i++){
                 this.hands[CARDINALS[i]] = new Hand({str: temp[i]})
+            }
+            if (this.hands.E.complete == false){
+                this.hands.E.set_from_three_hands([this.hands.S, this.hands.W, this.hands.N])
+                // console.log(this.hands.E)
             }
         } else {
             this.hands = hands
