@@ -5,7 +5,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 
 
 const bbourl = "https://www.bridgebase.com/tools/vugraph_linfetch.php"
-const bbovuarchive = "http://www.bridgebase.com/vugraph_archives/vugraph_archives.php"
+const bbovuarchive = "https://www.bridgebase.com/vugraph_archives/vugraph_archives.php"
 
 module.exports = function(app){
     
